@@ -9,7 +9,8 @@ CREATE TABLE Customer (
 CREATE TABLE Saloon (
 	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
 	Name VARCHAR(50) not null,
-	Location VARCHAR(89) not null
+	Location VARCHAR(89) not null,
+	Tel VARCHAR(15) not null
 );
 
 CREATE TABLE CustomerProfile (
@@ -24,15 +25,19 @@ CREATE TABLE CustomerProfile (
 CREATE TABLE Service (
 	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
 	Name VARCHAR(50) not null,
+	Description VARCHAR(200),
 	Price DECIMAL not null
 );
 
-CREATE TABLE SaloonService (
+CREATE TABLE Reservation (
 	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
+	Appointment DATETIME not null,
+	CustomerId UNIQUEIDENTIFIER not null,
 	SaloonId UNIQUEIDENTIFIER not null,
 	ServiceId UNIQUEIDENTIFIER not null,
-	CONSTRAINT "FK_SaloonService_Saloon_SaloonId" FOREIGN KEY (SaloonId) REFERENCES Saloon(Id),
-	CONSTRAINT "FK_SaloonService_Service_ServiceId" FOREIGN KEY (ServiceId) REFERENCES Service(Id)
+	CONSTRAINT "FK_Reservation_Customer_CustomerId" FOREIGN KEY (CustomerId) REFERENCES Customer(Id)
+	CONSTRAINT "FK_Reservation_Saloon_SaloonId" FOREIGN KEY (SaloonId) REFERENCES Saloon(Id),
+	CONSTRAINT "FK_Reservation_Service_ServiceId" FOREIGN KEY (ServiceId) REFERENCES Service(Id),
 );
 
 DECLARE @id UNIQUEIDENTIFIER;
