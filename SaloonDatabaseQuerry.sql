@@ -1,7 +1,9 @@
-CREATE TABLE UserWeb (
+CREATE DATABASE Saloon;
+
+CREATE TABLE Customer (
 	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
 	Username VARCHAR(30) not null,
-	Email VARCHAR(60) not null
+	Password VARCHAR(60) not null
 );
 
 CREATE TABLE Saloon (
@@ -10,11 +12,13 @@ CREATE TABLE Saloon (
 	Location VARCHAR(89) not null
 );
 
-CREATE TABLE Customer (
+CREATE TABLE CustomerProfile (
 	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
-	SaloonId UNIQUEIDENTIFIER not null,
-	CONSTRAINT "FK_Customer_UserWeb_UserId" FOREIGN KEY (Id) REFERENCES UserWeb(Id),
-	CONSTRAINT "FK_Customer_Saloon_SaloonId" FOREIGN KEY (SaloonId) REFERENCES Saloon(Id)
+	FirstName VARCHAR(50) not null,
+	LastName VARCHAR(50) not null,
+	Email VARCHAR(40) not null,
+	Tel VARCHAR(15) not null,
+	CONSTRAINT "FK_CustomerProfile_Customer_Id" FOREIGN KEY (Id) REFERENCES Customer(Id),
 );
 
 CREATE TABLE Service (
