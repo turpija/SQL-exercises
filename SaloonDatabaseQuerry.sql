@@ -44,7 +44,7 @@ DECLARE @id UNIQUEIDENTIFIER;
 SET @id = NEWID();
 
 INSERT INTO Customer VALUES (@id, 'korisnik1','lozinka123');
-INSERT INTO Saloon VALUES (newid(),'frizerski','osijek');
+INSERT INTO Saloon VALUES (newid(),'frizerski','osijek','031-222-333');
 INSERT INTO CustomerProfile VALUES(@id, 'Ivan','Horvat','ihorvat@hocuinternet.hr','099-123-456');
 
 INSERT INTO Service (Id,Name,Price) VALUES 
