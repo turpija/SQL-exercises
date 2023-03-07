@@ -11,9 +11,9 @@ CREATE TABLE Saloon (
 );
 
 CREATE TABLE Customer (
-	UserId UNIQUEIDENTIFIER PRIMARY KEY not null,
+	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
 	SaloonId UNIQUEIDENTIFIER not null,
-	CONSTRAINT "FK_Customer_UserWeb_UserId" FOREIGN KEY (UserId) REFERENCES UserWeb(Id),
+	CONSTRAINT "FK_Customer_UserWeb_UserId" FOREIGN KEY (Id) REFERENCES UserWeb(Id),
 	CONSTRAINT "FK_Customer_Saloon_SaloonId" FOREIGN KEY (SaloonId) REFERENCES Saloon(Id)
 );
 
@@ -30,3 +30,10 @@ CREATE TABLE SaloonService (
 	CONSTRAINT "FK_SaloonService_Saloon_SaloonId" FOREIGN KEY (SaloonId) REFERENCES Saloon(Id),
 	CONSTRAINT "FK_SaloonService_Service_ServiceId" FOREIGN KEY (ServiceId) REFERENCES Service(Id)
 );
+
+DECLARE @id UNIQUEIDENTIFIER;
+SET @id = NEWID();
+
+INSERT INTO UserWeb VALUES (@id, 'korisnik1','korisnik1@email.com');
+INSERT INTO Saloon VALUES (newid(),'frizerski','osijek');
+INSERT INTO Customer VALUES (@id, (SELECT Id FROM Saloon WHERE Name = 'frizerski'));
