@@ -1,25 +1,25 @@
-CREATE TABLE Users (
-	id UNIQUEIDENTIFIER PRIMARY KEY not null,
-	username VARCHAR(30) not null,
-	email VARCHAR(60) not null
+CREATE TABLE UserWeb (
+	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
+	Username VARCHAR(30) not null,
+	Email VARCHAR(60) not null
 );
 
 CREATE TABLE Saloon (
-	id UNIQUEIDENTIFIER PRIMARY KEY not null,
-	name VARCHAR(50) not null,
-	location VARCHAR(89) not null
+	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
+	Name VARCHAR(50) not null,
+	Location VARCHAR(89) not null
 );
 
-CREATE TABLE Customers (
-	id UNIQUEIDENTIFIER PRIMARY KEY not null,
-	userId UNIQUEIDENTIFIER not null,
-	saloonId UNIQUEIDENTIFIER not null,
-	FOREIGN KEY (userId) REFERENCES Users(id),
-	FOREIGN KEY (saloonId) REFERENCES Saloon(id)
+CREATE TABLE Customer (
+	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
+	UserId UNIQUEIDENTIFIER not null,
+	SaloonId UNIQUEIDENTIFIER not null,
+	FOREIGN KEY (UserId) REFERENCES UserWeb(Id),
+	FOREIGN KEY (SaloonId) REFERENCES Saloon(Id)
 );
 
-CREATE TABLE SaloonServices (
-	id UNIQUEIDENTIFIER PRIMARY KEY not null,
-	name VARCHAR(50) not null,
-	price DECIMAL not null
+CREATE TABLE SaloonService (
+	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
+	Name VARCHAR(50) not null,
+	Price DECIMAL not null
 );
