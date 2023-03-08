@@ -245,3 +245,12 @@ SELECT TOP 1 * FROM Album
 SELECT DISTINCT Band.Name FROM Band
 	JOIN Album
 	ON Album.BandId = Band.Id;
+
+-- 5. Get all Bands that have No Albums
+SELECT Band.Name AS "Band name"
+	FROM Band
+	LEFT JOIN Album
+	ON Band.Id = Album.BandId
+	WHERE Album.BandId IS NULL;
+
+
