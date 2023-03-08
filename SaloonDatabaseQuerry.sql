@@ -59,14 +59,13 @@ INSERT INTO Service (Id,Name,Price) VALUES
 
 INSERT INTO Reservation VALUES 
 	(newid(), 
-	'2023-04-15 16:30:00',
-	(SELECT Id FROM Customer WHERE Username = 'korisnik1'),
-	(SELECT Id FROM Saloon WHERE Name = 'frizerski'),
-	(SELECT Id FROM Service WHERE Name = 'šišanje')
+	'2023-05-05 17:45:00',
+	(SELECT Id FROM Customer WHERE Username = 'poweruser'),
+	(SELECT Id FROM Saloon WHERE Name = 'BeautySaloonForYou'),
+	(SELECT Id FROM Service WHERE Name = 'pranje kose')
 	);
-
-
 	
-SELECT * FROM "Service";
+SELECT * FROM Reservation;
+
 
 
