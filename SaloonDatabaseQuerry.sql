@@ -1,4 +1,4 @@
-CREATE DATABASE Saloon;
+﻿CREATE DATABASE Saloon;
 
 CREATE TABLE Customer (
 	Id UNIQUEIDENTIFIER PRIMARY KEY not null,
@@ -43,19 +43,30 @@ CREATE TABLE Reservation (
 DECLARE @id UNIQUEIDENTIFIER;
 SET @id = NEWID();
 
-INSERT INTO Customer VALUES (@id, 'korisnik1','lozinka123');
-INSERT INTO Saloon VALUES (newid(),'frizerski','osijek','031-222-333');
-INSERT INTO CustomerProfile VALUES(@id, 'Ivan','Horvat','ihorvat@hocuinternet.hr','099-123-456');
+INSERT INTO Customer VALUES (@id, 'troll','lolololol');
+INSERT INTO CustomerProfile VALUES(@id, 'Gerard','Butler','gerard43@aol.com','099-324-122');
+
+INSERT INTO Saloon VALUES 
+(newid(), 'frizerski', 'osijek','031-222-333'),
+(newid(), 'BarberŠop','veliškovci','031-444-555'),
+(newid(), 'BeautySaloonForYou', 'Donji Črnkovci', '050-456-678');
 
 INSERT INTO Service (Id,Name,Price) VALUES 
-	(newid(), '�i�anje','6.5'),
-	(newid(), 'brijanje','4');
+	(newid(), 'šišanje', 6.5),
+	(newid(), 'brijanje', 4),
+	(newid(), 'pranje kose', 3),
+	(newid(), 'bojanje trepavica', 7);
 
 INSERT INTO Reservation VALUES 
 	(newid(), 
 	'2023-04-15 16:30:00',
 	(SELECT Id FROM Customer WHERE Username = 'korisnik1'),
 	(SELECT Id FROM Saloon WHERE Name = 'frizerski'),
-	(SELECT Id FROM Service WHERE Name = '�i�anje')
+	(SELECT Id FROM Service WHERE Name = 'šišanje')
 	);
+
+
+	
+SELECT * FROM "Service";
+
 
