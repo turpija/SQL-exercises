@@ -236,3 +236,12 @@ INSERT INTO Song(Id,Name,LengthMin,AlbumId) VALUES (180,'Magic Taborea',3+(22/60
 INSERT INTO Song(Id,Name,LengthMin,AlbumId) VALUES (181,'Hearted',4+(00/60),18);
 INSERT INTO Song(Id,Name,LengthMin,AlbumId) VALUES (182,'Frodo''s Dream',3+(06/60),18);
 
+-- 3. Select the Oldest Album
+SELECT TOP 1 * FROM Album 
+	WHERE ReleaseYear IS NOT NULL 
+	ORDER BY ReleaseYear
+
+-- 4. Get all Bands that have Albums
+SELECT DISTINCT Band.Name FROM Band
+	JOIN Album
+	ON Album.BandId = Band.Id;
