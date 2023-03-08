@@ -65,7 +65,19 @@ INSERT INTO Reservation VALUES
 	(SELECT Id FROM Service WHERE Name = 'pranje kose')
 	);
 	
-SELECT * FROM Reservation;
+SELECT * FROM "Reservation";
 
+SELECT * FROM "Reservation"
+	WHERE "SaloonId" = (SELECT "Id" FROM "Saloon" WHERE "Name" = 'BeautySaloonForYou');
 
+-- get all reservations with details
+SELECT Reservation.Appointment, Saloon.Name AS "Saloon Name", Customer.Username AS "Customer Username"
+	FROM Reservation
+	JOIN Saloon ON Reservation.SaloonId = Saloon.Id 
+	JOIN Customer ON Reservation.CustomerId = Customer.Id;
 
+-- get number of reservations
+SELECT COUNT("Appointment") AS "Number of Reservations" FROM "Reservation";
+
+SELECT COUNT("Appointment") AS "Number of Reservations at BeautySaloonForYou" FROM "Reservation"
+	WHERE SaloonId = (SELECT "Id" FROM "Saloon" WHERE "Name" = 'BeautySaloonForYou');
