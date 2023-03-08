@@ -1,3 +1,5 @@
+--https://github.com/WebDevSimplified/Learn-SQL
+
 CREATE DATABASE "RecordCompany";
 
 USE "RecordCompany";
@@ -18,7 +20,7 @@ CREATE TABLE "Album" (
 CREATE TABLE "Song" (
 	"Id" INT NOT NULL PRIMARY KEY,
 	"Name" VARCHAR(100) NOT NULL,
-	"LengthMinMin" FLOAT NOT NULL,
+	"LengthMin" FLOAT NOT NULL,
 	"AlbumId" INT NOT NULL,
 	CONSTRAINT "FK_Song_Album_AlbumId" FOREIGN KEY (AlbumId) REFERENCES Album(Id)
 );
@@ -253,4 +255,9 @@ SELECT Band.Name AS "Band name"
 	ON Band.Id = Album.BandId
 	WHERE Album.BandId IS NULL;
 
+-- 6. Get the Longest Album
+SELECT TOP 1 Album.Name AS "Album name", SUM(Song.LengthMin) AS "Duration" FROM Album
+	JOIN Song ON Album.Id = Song.AlbumId
+	GROUP BY Album.Name
+	ORDER BY Duration DESC
 
