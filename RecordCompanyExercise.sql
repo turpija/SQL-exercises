@@ -23,3 +23,7 @@ CREATE TABLE "Song" (
 	CONSTRAINT "FK_Song_Album_AlbumId" FOREIGN KEY (AlbumId) REFERENCES Album(Id)
 );
 
+INSERT INTO "Band" VALUES 
+(newid(), 'Metallica'),
+(newid(), 'Iron Maiden'),
+(newid(), 'Dream Theater');
