@@ -59,10 +59,10 @@ INSERT INTO Service (Id,Name,Price) VALUES
 
 INSERT INTO Reservation VALUES 
 	(newid(), 
-	'2023-05-05 17:45:00',
-	(SELECT Id FROM Customer WHERE Username = 'poweruser'),
-	(SELECT Id FROM Saloon WHERE Name = 'BeautySaloonForYou'),
-	(SELECT Id FROM Service WHERE Name = 'pranje kose')
+	'2023-05-10 15:00:00',
+	(SELECT Id FROM Customer WHERE Username = 'korisnik2'),
+	(SELECT Id FROM Saloon WHERE Name = 'BarberŠop'),
+	(SELECT Id FROM Service WHERE Name = 'šišanje')
 	);
 	
 SELECT * FROM "Reservation";
@@ -81,3 +81,15 @@ SELECT COUNT("Appointment") AS "Number of Reservations" FROM "Reservation";
 
 SELECT COUNT("Appointment") AS "Number of Reservations at BeautySaloonForYou" FROM "Reservation"
 	WHERE SaloonId = (SELECT "Id" FROM "Saloon" WHERE "Name" = 'BeautySaloonForYou');
+
+-- get total amount of price from reservation
+SELECT * FROM "Reservation";
+
+SELECT SUM("Price") AS "Total Sum of all services Reserved" FROM "Reservation" r
+	JOIN "Service" s ON r."ServiceId" = s."Id";
+
+-- get number of reservations per saloon
+SELECT r."Appointment", s."Name" FROM "Reservation" r
+	JOIN "Saloon" s
+	ON r."SaloonId" = s."Id"
+
