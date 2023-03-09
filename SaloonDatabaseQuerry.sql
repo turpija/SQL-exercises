@@ -118,9 +118,13 @@ SELECT s."Name" AS "Saloon name",
 	JOIN "Service" srv ON r."ServiceId" = srv."Id"
 	ORDER BY s."Name";
 
--- sum of services per saloon
-SELECT Saloon.Name AS "Saloon",COUNT(Service.Id) AS "Number of appointments",  SUM(Service.Price) AS "Total Income from appointments" FROM Reservation
-	JOIN Service ON Reservation.ServiceId = Service.Id
-	JOIN Saloon ON Reservation.SaloonId = Saloon.Id
-	GROUP BY Saloon.Name
-	ORDER BY Saloon.Name
+GO
+
+-- VIEW sum of services per saloon
+CREATE OR ALTER VIEW "SaloonIncomes" AS 
+	SELECT s."Name" AS "Saloon", 
+		COUNT(sr."Id") AS "Number of appointments", 
+		SUM(sr."Price") AS "Total Income from appointments" FROM "Reservation" r
+	JOIN "Service" sr ON r."ServiceId" = sr.Id
+	JOIN "Saloon" s ON r."SaloonId" = s.Id
+	GROUP BY s.Name
