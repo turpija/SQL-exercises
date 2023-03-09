@@ -127,25 +127,33 @@ CREATE OR ALTER VIEW "SaloonIncomes" AS
 	JOIN "Service" sr ON r."ServiceId" = sr.Id
 	JOIN "Saloon" s ON r."SaloonId" = s.Id
 	GROUP BY s.Name
+GO
+
+SELECT * FROM SaloonIncomes
 
 -- create function tombola
 GO
+
 CREATE OR ALTER FUNCTION "Tombola" (@num int, @rand float)
-returns int
-AS
+	returns int
+	AS
 BEGIN
-return CEILING((@num * @rand))
+	return CEILING((@num * @rand))
 END;
 
 GO
 
--- use function tombola
+-- use function tombola --
+
+-- get number of customers 
 DECLARE @customers INT
 	SET @customers = (SELECT COUNT(Customer.Username) FROM "Customer");
 
+-- save random number
 DECLARE @TombolaRes INT
 	SET @TombolaRes = dbo.Tombola(@customers,rand());
 
+-- get the winner
 SELECT * FROM Customer
 	ORDER BY Id
 	OFFSET @TombolaRes-1 ROWS
