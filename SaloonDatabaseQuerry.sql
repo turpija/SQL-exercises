@@ -141,6 +141,12 @@ GO
 
 -- use function tombola
 DECLARE @customers INT
-SET @customers = (SELECT COUNT(Customer.Username) FROM "Customer");
+	SET @customers = (SELECT COUNT(Customer.Username) FROM "Customer");
 
-SELECT dbo.Tombola(@customers,rand())
+DECLARE @TombolaRes INT
+	SET @TombolaRes = dbo.Tombola(@customers,rand());
+
+SELECT * FROM Customer
+	ORDER BY Id
+	OFFSET @TombolaRes-1 ROWS
+	FETCH NEXT 1 ROW ONLY;
