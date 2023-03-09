@@ -277,4 +277,5 @@ DELETE FROM Album
 DELETE FROM Band
 	WHERE Band.Name = 'Above and Beyond';
 
-
+-- 10. Get the Average Length of all Songs
+SELECT AVG(LengthMin) AS "Average song length" FROM Song;
