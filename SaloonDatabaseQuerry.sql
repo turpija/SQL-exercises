@@ -133,28 +133,16 @@ SELECT * FROM SaloonIncomes
 
 -- create function tombola
 GO
-
-CREATE OR ALTER FUNCTION "Tombola" (@num int, @rand float)
-	returns int
-	AS
-BEGIN
-	return CEILING((@num * @rand))
-END;
+CREATE OR ALTER FUNCTION "Tombola" (@rand float)
+returns TABLE
+AS
+return 
+SELECT * FROM Customer
+	ORDER BY Id
+	OFFSET CAST((SELECT FLOOR((SELECT COUNT(Customer.Username) FROM Customer) * @rand))AS INT) ROWS
+	FETCH NEXT 1 ROW ONLY
 
 GO
 
--- use function tombola --
-
--- get number of customers 
-DECLARE @customers INT
-	SET @customers = (SELECT COUNT(Customer.Username) FROM "Customer");
-
--- save random number
-DECLARE @TombolaRes INT
-	SET @TombolaRes = dbo.Tombola(@customers,rand());
-
--- get the winner
-SELECT * FROM Customer
-	ORDER BY Id
-	OFFSET @TombolaRes-1 ROWS
-	FETCH NEXT 1 ROW ONLY;
+-- call function and we have a winner
+SELECT * FROM dbo.Tombola(rand());
