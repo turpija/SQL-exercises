@@ -279,3 +279,9 @@ DELETE FROM Band
 
 -- 10. Get the Average Length of all Songs
 SELECT AVG(LengthMin) AS "Average song length" FROM Song;
+
+-- 11. Select the longest Song off each Album
+SELECT Album.Name AS "Album name", MAX(Song.LengthMin) AS "Longest song (min)" FROM Song
+	JOIN Album
+	ON Song.AlbumId = Album.Id
+	GROUP BY Album.Name
