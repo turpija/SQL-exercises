@@ -261,3 +261,8 @@ SELECT TOP 1 Album.Name AS "Album name", SUM(Song.LengthMin) AS "Duration" FROM 
 	GROUP BY Album.Name
 	ORDER BY Duration DESC
 
+-- 7. Update the Release Year of the Album with no Release Year
+UPDATE Album
+SET Album.ReleaseYear = 1986
+WHERE Album.Id = (SELECT Album.Id FROM Album WHERE "ReleaseYear" is NULL)
+
