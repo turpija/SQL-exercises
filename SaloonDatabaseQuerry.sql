@@ -43,8 +43,8 @@ CREATE TABLE Reservation (
 DECLARE @id UNIQUEIDENTIFIER;
 SET @id = NEWID();
 
-INSERT INTO Customer VALUES (@id, 'troll','lolololol');
-INSERT INTO CustomerProfile VALUES(@id, 'Gerard','Butler','gerard43@aol.com','099-324-122');
+INSERT INTO Customer VALUES (@id, 'beskorisnik','x6c7rd');
+INSERT INTO CustomerProfile VALUES(@id, 'John','Doe','john@doe.me','099-555-2387');
 
 INSERT INTO Saloon VALUES 
 (newid(), 'frizerski', 'osijek','031-222-333'),
@@ -57,15 +57,23 @@ INSERT INTO Service (Id,Name,Price) VALUES
 	(newid(), 'pranje kose', 3),
 	(newid(), 'bojanje trepavica', 7);
 
+
+ALTER TABLE Service
+	ALTER COLUMN Price decimal(4,2)
+
+UPDATE Service
+	SET Price = 4.5
+	WHERE Name = 'brijanje';
+
 INSERT INTO Reservation VALUES 
 	(newid(), 
-	'2023-05-10 15:00:00',
-	(SELECT Id FROM Customer WHERE Username = 'korisnik2'),
-	(SELECT Id FROM Saloon WHERE Name = 'BarberŠop'),
-	(SELECT Id FROM Service WHERE Name = 'šišanje')
+	'2023-05-11 20:30:00',
+	(SELECT Id FROM Customer WHERE Username = 'beskorisnik'),
+	(SELECT Id FROM Saloon WHERE Name = 'BeautySaloonForYou'),
+	(SELECT Id FROM Service WHERE Name = 'pranje kose')
 	);
 	
-SELECT * FROM "Reservation";
+SELECT Price FROM Service;
 
 SELECT * FROM "Reservation"
 	WHERE "SaloonId" = (SELECT "Id" FROM "Saloon" WHERE "Name" = 'BeautySaloonForYou');
@@ -109,3 +117,36 @@ SELECT s."Name" AS "Saloon name",
 	JOIN "Saloon" s ON r."SaloonId" = s."Id"
 	JOIN "Service" srv ON r."ServiceId" = srv."Id"
 	ORDER BY s."Name";
+
+-- VIEW sum of services per saloon
+GO
+CREATE OR ALTER VIEW "SaloonIncomes" AS 
+	SELECT s."Name" AS "Saloon", 
+		COUNT(sr."Id") AS "Number of appointments", 
+		SUM(sr."Price") AS "Total Income from appointments" FROM "Reservation" r
+	JOIN "Service" sr ON r."ServiceId" = sr.Id
+	JOIN "Saloon" s ON r."SaloonId" = s.Id
+	GROUP BY s.Name
+
+-- create function tombola
+GO
+CREATE OR ALTER FUNCTION "Tombola" (@num int, @rand float)
+returns int
+AS
+BEGIN
+return CEILING((@num * @rand))
+END;
+
+GO
+
+-- use function tombola
+DECLARE @customers INT
+	SET @customers = (SELECT COUNT(Customer.Username) FROM "Customer");
+
+DECLARE @TombolaRes INT
+	SET @TombolaRes = dbo.Tombola(@customers,rand());
+
+SELECT * FROM Customer
+	ORDER BY Id
+	OFFSET @TombolaRes-1 ROWS
+	FETCH NEXT 1 ROW ONLY;
