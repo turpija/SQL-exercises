@@ -263,6 +263,18 @@ SELECT TOP 1 Album.Name AS "Album name", SUM(Song.LengthMin) AS "Duration" FROM 
 
 -- 7. Update the Release Year of the Album with no Release Year
 UPDATE Album
-SET Album.ReleaseYear = 1986
-WHERE Album.Id = (SELECT Album.Id FROM Album WHERE "ReleaseYear" is NULL)
+	SET Album.ReleaseYear = 1986
+	WHERE Album.Id = (SELECT Album.Id FROM Album WHERE "ReleaseYear" is NULL)
+
+-- 8. Insert a record for your favorite Band and one of their Albums
+INSERT INTO Band VALUES (8, 'Above and Beyond');
+INSERT INTO Album VALUES (19, 'Acoustic', 2012, 8);
+
+-- 9. Delete the Band and Album you added in #8
+DELETE FROM Album 
+	WHERE Album.Name = 'Acoustic';
+
+DELETE FROM Band
+	WHERE Band.Name = 'Above and Beyond';
+
 
