@@ -118,9 +118,8 @@ SELECT s."Name" AS "Saloon name",
 	JOIN "Service" srv ON r."ServiceId" = srv."Id"
 	ORDER BY s."Name";
 
-GO
-
 -- VIEW sum of services per saloon
+GO
 CREATE OR ALTER VIEW "SaloonIncomes" AS 
 	SELECT s."Name" AS "Saloon", 
 		COUNT(sr."Id") AS "Number of appointments", 
@@ -128,3 +127,20 @@ CREATE OR ALTER VIEW "SaloonIncomes" AS
 	JOIN "Service" sr ON r."ServiceId" = sr.Id
 	JOIN "Saloon" s ON r."SaloonId" = s.Id
 	GROUP BY s.Name
+
+-- create function tombola
+GO
+CREATE OR ALTER FUNCTION "Tombola" (@num int, @rand float)
+returns int
+AS
+BEGIN
+return CEILING((@num * @rand))
+END;
+
+GO
+
+-- use function tombola
+DECLARE @customers INT
+SET @customers = (SELECT COUNT(Customer.Username) FROM "Customer");
+
+SELECT dbo.Tombola(@customers,rand())
