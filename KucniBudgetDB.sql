@@ -61,6 +61,8 @@ INSERT INTO Expense (Id, PersonId, CategoryId, Name, Date,Cost) VALUES
 (NEWID(), @IvanId, @LuksuzId, 'Sladoled','2023-02-15', 5),
 (NEWID(), @KatarinaId, @LuksuzId, 'Pekara','2023-02-18', 2.10);
 
+
+-- ispiši potrošeno za kategoriju unutar datuma
 GO
 CREATE OR ALTER FUNCTION ShowCategory (@category VARCHAR(30), @DateStart DATE, @dateEnd DATE)
 RETURNS TABLE 
@@ -71,5 +73,24 @@ SELECT Category.Name AS "Category", Person.Username, Expense.Name AS "ExpenseNam
 	WHERE Category.Name = @category AND Expense.Date BETWEEN @DateStart AND @DateEnd;
 GO
 
+
 SELECT * FROM dbo.ShowCategory('Hrana','2023-02-01','2023-03-01');
-SELECT * FROM dbo.ShowCategory('Luksuz','2023-03-01','2023-04-01');
+SELECT SUM(Cost) FROM dbo.ShowCategory('Luksuz','2023-03-01','2023-04-01');
+	
+SELECT CONCAT('2023-02 za hranu potrošeno = ',SUM(Cost))
+FROM dbo.ShowCategory('Hrana','2023-02-01','2023-03-01');
+
+
+-- ispiši ukupno potrošeno po kategorija unutar datuma
+GO
+CREATE OR ALTER FUNCTION ExpensePerCategory (@DateStart DATE, @dateEnd DATE)
+RETURNS TABLE 
+AS RETURN
+SELECT Category.Name AS "Category", SUM(Cost) AS "Ukupno" FROM Expense
+	JOIN Person ON Expense.PersonId = Person.Id
+	JOIN Category ON Expense.CategoryId = Category.Id
+	WHERE Expense.Date BETWEEN @DateStart AND @dateEnd
+	GROUP BY Category.Name 
+GO
+
+SELECT * FROM dbo.ExpensePerCategory('2023-02-01','2023-03-01');
