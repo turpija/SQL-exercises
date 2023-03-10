@@ -105,3 +105,30 @@ INSERT INTO "Bid" VALUES
 INSERT INTO "Bid" VALUES 
 (NEWID(),@maraId, @auction1, 25, '2023-03-10 08:08:00'),
 (NEWID(),@juraId, @auction1, 25.01, '2023-03-10 09:09:00');
+
+
+------- let's see the data
+
+-- sve aukcije
+GO
+CREATE OR ALTER VIEW "SveAukcije" AS
+	SELECT i."Name", u."Username", b."BidPrice" FROM "Bid" b
+	JOIN "Auction" a ON b."AuctionId" = a."Id"
+	JOIN "User" u ON b."UserId" = u."Id"
+	JOIN "Item" i ON a."Id" = i."Id"
+GO
+
+SELECT * FROM "SveAukcije"
+
+
+-- trenutne aukcije
+SELECT Name, MAX(BidPrice) FROM "SveAukcije"
+	GROUP BY Name
+
+	
+SELECT c."Name", i."Name", u."Username", b."BidPrice" FROM "Bid" b
+	JOIN "Auction" a ON b."AuctionId" = a."Id"
+	JOIN "User" u ON b."UserId" = u."Id"
+	JOIN "Item" i ON a."Id" = i."Id"
+	JOIN "Category" c ON c."Id" = i."CategoryId"
+
