@@ -285,3 +285,11 @@ SELECT Album.Name AS "Album name", MAX(Song.LengthMin) AS "Longest song (min)" F
 	JOIN Album
 	ON Song.AlbumId = Album.Id
 	GROUP BY Album.Name
+
+-- 12. Get the number of Songs for each Band
+SELECT Band.Name AS "Band Name", COUNT(*) AS "Number of songs" 
+	FROM Song
+	JOIN Album ON Song.AlbumId = Album.Id
+	JOIN Band ON Album.BandId = Band.Id
+	GROUP BY Band.Name
+
