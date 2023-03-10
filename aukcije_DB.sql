@@ -112,23 +112,34 @@ INSERT INTO "Bid" VALUES
 -- sve aukcije
 GO
 CREATE OR ALTER VIEW "SveAukcije" AS
-	SELECT i."Name", u."Username", b."BidPrice" FROM "Bid" b
+SELECT s."Name" AS "Section", c."Name" AS "Category", i."Name" AS "Item", u."Username", b."BidPrice" FROM "Bid" b
 	JOIN "Auction" a ON b."AuctionId" = a."Id"
 	JOIN "User" u ON b."UserId" = u."Id"
 	JOIN "Item" i ON a."Id" = i."Id"
+	JOIN "Category" c ON c."Id" = i."CategoryId"
+	JOIN "Section" s ON s."Id" = c."SectionId"
 GO
 
 SELECT * FROM "SveAukcije"
+	ORDER BY "Section"
 
 
 -- trenutne aukcije
 SELECT Name, MAX(BidPrice) FROM "SveAukcije"
 	GROUP BY Name
 
-	
-SELECT c."Name", i."Name", u."Username", b."BidPrice" FROM "Bid" b
-	JOIN "Auction" a ON b."AuctionId" = a."Id"
-	JOIN "User" u ON b."UserId" = u."Id"
-	JOIN "Item" i ON a."Id" = i."Id"
-	JOIN "Category" c ON c."Id" = i."CategoryId"
 
+-- funkcija najvrjednija aukcija
+GO
+CREATE OR ALTER FUNCTION "NajvrjednijaAukcija"()
+	RETURNS TABLE 
+AS RETURN
+SELECT Item.Name, "User".Username, Bid.BidPrice FROM Bid
+	JOIN Auction ON Auction.Id = Bid.AuctionId
+	JOIN Item ON Item.Id = Auction.Id
+	JOIN "User" ON "User".Id = Bid.UserId
+	WHERE BidPrice = (SELECT MAX(BidPrice) FROM Bid)
+GO
+
+SELECT * FROM NajvrjednijaAukcija()
+	
