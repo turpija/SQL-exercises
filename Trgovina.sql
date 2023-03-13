@@ -57,6 +57,15 @@ INSERT INTO "Osoba" (Id,Ime,Prezime,OIB,Mobitel,MjestoStanovanja)VALUES
 (4,'Zlatko','Kokolenković','23245678933','099333444','Donja Špičkovina'),
 (5,'Ivo','Patiera','75445678999',null,'Stari Mirkovac');
 
+
+INSERT INTO "Osoba" (Id,Ime,Prezime,OIB,Mobitel,MjestoStanovanja)VALUES 
+(6,'Patko','Patak','22345678922',null,'Rijeka');
+
+UPDATE "Osoba"
+ SET "MjestoStanovanja" = 'Donja Špičkovina'
+ WHERE "Id" = 5;
+
+
 INSERT INTO "Artikl" VALUES 
 (11,'grašak','kg',13.45,13),
 (12,'paradajz','kg',7.99,13),
@@ -79,13 +88,30 @@ INSERT INTO "NarudzbaArtikl" VALUES
 (34,24,12,1.885),
 (35,25,12,2.3);
 
+--12. Napravite upite na tablici Osoba:
+
 --a. Dohvatite sve podatke,
 SELECT * FROM "Osoba";
 
 --b. Dohvatite sve podatke, tako da ime i prezime kombinirate u jednom stupcu i imenujte ga s „ime iprezime“
+SELECT CONCAT("Ime", ' ', "prezime") AS "ime i prezime" FROM "Osoba";
+
 --c. Dohvatite sve podatke iz tablice osoba kojima prezime počinje s slovom P
+SELECT * FROM "Osoba"
+	WHERE "Ime" LIKE 'P%'; 
+
 --d. Dohvatite imena osoba koji nemaju unesen broj mobitela.
+SELECT * FROM "Osoba"
+	WHERE "Mobitel" IS NULL; 
+
 --e. Dohvatite sve osobe koje imaju MjestoStanovanja u Osijeku, Našicama ili Vinkovcima.
+SELECT * FROM "Osoba" 
+	WHERE "MjestoStanovanja" = 'Osijek' OR
+	"MjestoStanovanja" = 'Našice' OR
+	"MjestoStanovanja" = 'Osijek';
+
 --f. Dohvati koliko je različitih mjesta stanovanja uneseno u tabliu Osoba.
+SELECT COUNT(DISTINCT MjestoStanovanja) FROM "Osoba"
+
 --g. Dohvati za svaku osobu broj slova u imenu, sve znakove prezimena pretvorite u
---mala slova, svako ime Ivan zamijenite s imenom Leonard i iz mjesta stanovanja dohvatite od--3. znaka sljedećih 5 znakova.
+--   mala slova, svako ime Ivan zamijenite s imenom Leonard i iz mjesta stanovanja dohvatite od--   3. znaka sljedećih 5 znakova.
