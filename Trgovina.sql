@@ -1,0 +1,39 @@
+CREATE DATABASE "Trgovina";
+
+USE "Trgovina"
+
+CREATE TABLE "Osoba" (
+	"Id" INT NOT NULL PRIMARY KEY,
+	"OIB" CHAR(11) NOT NULL,
+	"Ime" NVARCHAR(30),
+	"Mobitel" VARCHAR(10),
+	"Email" VARCHAR(50),
+	"MjestoStanovanja" VARCHAR(50)
+);
+
+ALTER TABLE "Osoba" 
+	ADD "StrucnaSprema" VARCHAR(50);
+
+ALTER TABLE "Osoba"
+	ADD "Prezime" NVARCHAR(40);
+
+ALTER TABLE "Osoba"
+	ALTER COLUMN "Ime" NVARCHAR(42)
+
+ALTER TABLE "Osoba"
+	ALTER COLUMN "Prezime" NVARCHAR(42);
+
+CREATE TABLE "Narudzba" (
+	"Id" INT NOT NULL PRIMARY KEY,
+	"Broj" VARCHAR(30) NOT NULL,
+	"Datum" DATETIME NOT NULL,
+	"NaruciteljId" INT NOT NULL,
+	"ProdavacId" INT NOT NULL 
+);
+
+CREATE TABLE "NarudzbaArtikl" (
+	"Id" INT NOT NULL PRIMARY KEY,
+	"NarudzbaId" INT NOT NULL,
+	"ArtiklId" INT NOT NULL,
+	"Kolicina" FLOAT NOT NULL
+);
