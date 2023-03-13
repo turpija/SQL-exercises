@@ -143,3 +143,17 @@ SELECT * FROM "Osoba"
 
 --17. Kreirati pogled „Narucitelji_i_prodavaci“ gdje ćemo imati za svaku narudžbu ime i prezime 
 --    prodavača i naručitelja, kao i datum naružbe. 
+GO
+CREATE OR ALTER VIEW "Narucitelji_i_prodavaci" AS
+SELECT Narudzba.*, CONCAT ('(',oProd.Id,') ', oProd.Ime,' ', oProd.Prezime) AS "Prodavač (Id, ime prezime)",
+	CONCAT ('(',oNar.Id,') ', oNar.Ime,' ', oNar.Prezime) AS "Naručitelj (Id, ime prezime)"
+FROM "NarudzbaArtikl"
+	JOIN "Narudzba" ON "NarudzbaArtikl"."NarudzbaId" = "Narudzba"."Id"
+	JOIN "Osoba" oNar ON "Narudzba"."NaruciteljId" = "oNar"."Id" 
+	JOIN "Osoba" oProd ON "Narudzba"."ProdavacId" = "oProd"."Id" 
+GO
+
+SELECT * FROM Narucitelji_i_prodavaci;
+
+--18. Napravite upit gdje ćete iz tablice Artikl na cijeni prikazati kolika je zaokružena na veći cijeli broj, a 
+--    koliko zaokružena na manji cijeli broj. 
