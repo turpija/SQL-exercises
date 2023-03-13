@@ -114,4 +114,32 @@ SELECT * FROM "Osoba"
 SELECT COUNT(DISTINCT MjestoStanovanja) FROM "Osoba"
 
 --g. Dohvati za svaku osobu broj slova u imenu, sve znakove prezimena pretvorite u
---   mala slova, svako ime Ivan zamijenite s imenom Leonard i iz mjesta stanovanja dohvatite od--   3. znaka sljedećih 5 znakova.
+--   mala slova, svako ime Ivan zamijenite s imenom Leonard i iz mjesta stanovanja dohvatite od
+--   3. znaka sljedećih 5 znakova.
+SELECT Ime, LEN(Ime) AS "br. slova", LOWER(Prezime) AS "Prezime", REPLACE("Ime", 'Ivan','Leonard') AS "Ivan -> Leonard", SUBSTRING("MjestoStanovanja", 3,5) AS "Mjesto stanovanja od 3." FROM "Osoba"
+
+--13.  Napravite upite na tablici Osoba: 
+--a. Pronađi najskuplji artikl iz tablice Artikl. 
+SELECT * FROM "Artikl"
+	WHERE "Cijena" = (SELECT MAX("Cijena") FROM "Artikl")
+
+--b. Pronađi 20% najjeftinijih artikala u tablici Artikl.
+SELECT TOP 20 PERCENT * FROM "Artikl"
+	ORDER BY "Cijena" 
+
+--14. Napravite upit tako da za svaku narudžbu prikažeš tko je bio prodavač. 
+SELECT Narudzba.*, CONCAT ('(',Osoba.Id,') ', Osoba.Ime,' ', Osoba.Prezime) AS "Prodavač (Id, ime prezime)" FROM "NarudzbaArtikl"
+	JOIN "Narudzba" ON "NarudzbaArtikl"."NarudzbaId" = "Narudzba"."Id"
+	JOIN "Osoba" ON "Narudzba"."ProdavacId" = "Osoba"."Id"
+
+--15. Napravi upit koji je za svaku narudžbu prikazati tko je bio naručitelj.
+SELECT Narudzba.*, CONCAT ('(',Osoba.Id,') ', Osoba.Ime,' ', Osoba.Prezime) AS "Naručitelj (Id, ime prezime)" FROM "NarudzbaArtikl"
+	JOIN "Narudzba" ON "NarudzbaArtikl"."NarudzbaId" = "Narudzba"."Id"
+	JOIN "Osoba" ON "Narudzba"."NaruciteljId" = "Osoba"."Id"
+
+--16. Napraviti pogled na tablicu Osoba imena „Ivani“ gdje će prikazivati samo one kojima je ime „Ivan.
+SELECT * FROM "Osoba"
+	WHERE "Ime" LIKE 'Ivan'
+
+--17. Kreirati pogled „Narucitelji_i_prodavaci“ gdje ćemo imati za svaku narudžbu ime i prezime 
+--    prodavača i naručitelja, kao i datum naružbe. 
