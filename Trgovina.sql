@@ -150,7 +150,7 @@ SELECT Narudzba.*, CONCAT ('(',oProd.Id,') ', oProd.Ime,' ', oProd.Prezime) AS "
 FROM "NarudzbaArtikl"
 	JOIN "Narudzba" ON "NarudzbaArtikl"."NarudzbaId" = "Narudzba"."Id"
 	JOIN "Osoba" oNar ON "Narudzba"."NaruciteljId" = "oNar"."Id" 
-	JOIN "Osoba" oProd ON "Narudzba"."ProdavacId" = "oProd"."Id" 
+	JOIN "Osoba" oProd ON "Narudzba"."ProdavacId" = "oProd"."Id" ;
 GO
 
 SELECT * FROM Narucitelji_i_prodavaci;
@@ -160,7 +160,15 @@ SELECT * FROM Narucitelji_i_prodavaci;
 SELECT FLOOR(Cijena) AS "Cijena zaokružena na manje", CEILING(Cijena) AS "Cijena zaokružena na više" FROM "Artikl"
 
 --19. Napravite funkciju koja će računati koliko je prošlo godina od proslijeđenog datuma do današnjeg datuma. 
--- ?!? proslijeđenog datuma ?!?
+GO
+CREATE OR ALTER FUNCTION "RazlikaGodina" (@InputDate DATETIME, @currentDate DATETIME) 
+RETURNS INT AS
+BEGIN
+	RETURN DATEDIFF(YEAR,@InputDate, @currentDate);
+END;
+GO
+
+SELECT dbo."RazlikaGodina"('2000', GETDATE());
 
 --20. Napravi funkciju koja će za svakiIz tablice Narudzba za svaku narudžbu dohvatite datum kad je 
 --    napravljena, trenutni datum na računalu, koliko je dana prošlo od narudžbe te koje je godine 
@@ -176,7 +184,7 @@ SELECT Narudzba.Id,
 	GETDATE() AS "Trenutni datum", 
 	DATEDIFF(DAY, Narudzba.Datum, GETDATE()) AS "Dana prošlo od narudžbe",
 	YEAR(Narudzba.Datum) AS "Godina Narudžbe"
-	FROM "Narudzba"
+	FROM "Narudzba";
 GO
 
 SELECT * FROM dbo.NarudzbaVrijeme();
