@@ -157,3 +157,26 @@ SELECT * FROM Narucitelji_i_prodavaci;
 
 --18. Napravite upit gdje ćete iz tablice Artikl na cijeni prikazati kolika je zaokružena na veći cijeli broj, a 
 --    koliko zaokružena na manji cijeli broj. 
+SELECT FLOOR(Cijena) AS "Cijena zaokružena na manje", CEILING(Cijena) AS "Cijena zaokružena na više" FROM "Artikl"
+
+--19. Napravite funkciju koja će računati koliko je prošlo godina od proslijeđenog datuma do današnjeg datuma. 
+-- ?!? proslijeđenog datuma ?!?
+
+--20. Napravi funkciju koja će za svakiIz tablice Narudzba za svaku narudžbu dohvatite datum kad je 
+--    napravljena, trenutni datum na računalu, koliko je dana prošlo od narudžbe te koje je godine 
+--    napravljena narudžba. 
+GO
+CREATE OR ALTER FUNCTION "NarudzbaVrijeme"()
+RETURNS TABLE
+AS
+RETURN
+SELECT Narudzba.Id, 
+	Narudzba.Broj,
+	Narudzba.Datum, 
+	GETDATE() AS "Trenutni datum", 
+	DATEDIFF(DAY, Narudzba.Datum, GETDATE()) AS "Dana prošlo od narudžbe",
+	YEAR(Narudzba.Datum) AS "Godina Narudžbe"
+	FROM "Narudzba"
+GO
+
+SELECT * FROM dbo.NarudzbaVrijeme();
